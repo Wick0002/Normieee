@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miss Normiee Jiiiiiiii</title>
+
+<link rel="stylesheet" href="nadira.css">
+</head>
+<body>
+
+<div class="scroll-text" id="scrollText">Miss Front-Desk Ji</div>
+
+<div class="message-box" id="msgBox" style="display:none;">
+  <p>Can you please take me out?</p>
+  <button class="btn" id="yesBtn">Yes</button>
+  <button class="btn" id="noBtn">No</button>
+</div>
+
+<script >
+const scrollText = document.getElementById('scrollText');
+let pos = -scrollText.offsetWidth;
+const centerX = window.innerWidth/2 - scrollText.offsetWidth/2;
+const animInterval = setInterval(()=>{
+  if(pos < centerX){
+    pos += 5;
+    scrollText.style.left = pos + 'px';
+  } else {
+    scrollText.style.left = centerX+'px';
+    clearInterval(animInterval);
+    const msgBox=document.getElementById('msgBox');
+    msgBox.style.display='flex';
+    document.getElementById('yesBtn').style.left=(window.innerWidth*0.3)+'px';
+    document.getElementById('yesBtn').style.top='60%';
+    document.getElementById('noBtn').style.left=(window.innerWidth*0.55)+'px';
+    document.getElementById('noBtn').style.top='60%';
+  }
+},20);
+
+const wordsList=["Normiee","Mithai","Misthu","Sweetieeee","Sweetheart"];
+const colors=["#ff0044","#ff66cc","#33ff33","#ffdd00","#00ffff"];
+const noBtn = document.getElementById('noBtn');
+const yesBtn = document.getElementById('yesBtn');
+
+
+function spawnFloatingWord(){
+  const word = document.createElement('div');
+  word.classList.add('floating-word');
+  word.innerText = wordsList[Math.floor(Math.random()*wordsList.length)];
+  word.style.color = colors[Math.floor(Math.random()*colors.length)];
+  word.style.left = Math.random()*window.innerWidth+'px';
+  word.style.top = Math.random()*window.innerHeight+'px';
+  document.body.appendChild(word);
+  
+  let dx = (Math.random()*2-1)*1.2;
+  let dy = (Math.random()*2-1)*1.2;
+  const move = setInterval(()=>{
+    let left=parseFloat(word.style.left);
+    let top=parseFloat(word.style.top);
+    left+=dx; top+=dy;
+    if(left<0 || left>window.innerWidth-50) dx*=-1;
+    if(top<0 || top>window.innerHeight-50) dy*=-1;
+    word.style.left = left+'px';
+    word.style.top = top+'px';
+  },20);
+}
+
+
+function spawnCatGif(src){
+  const cat=document.createElement('img');
+  cat.src=src;
+  cat.classList.add('floating-cat');
+  cat.style.left=(window.innerWidth/2 - 200)+'px';
+  cat.style.top=(window.innerHeight/2 - 200)+'px';
+  document.body.appendChild(cat);
+  setTimeout(()=>cat.remove(),2000);
+}
+
+
+function moveNoBtn(){
+  const btnWidth = noBtn.offsetWidth;
+  const btnHeight = noBtn.offsetHeight;
+  const x=Math.random()*(window.innerWidth-btnWidth);
+  const y=Math.random()*(window.innerHeight-btnHeight);
+  noBtn.style.left = x+'px';
+  noBtn.style.top = y+'px';
+  noBtn.style.background = colors[Math.floor(Math.random()*colors.length)];
+
+  
+  for(let i=0;i<5;i++) spawnFloatingWord();
+ 
+  spawnCatGif('giphy.gif'); 
+}
+
+
+yesBtn.addEventListener('click',()=>{
+  spawnCatGif('giphy copy.gif');
+  
+});
+
+
+noBtn.addEventListener('mouseenter',moveNoBtn);
+noBtn.addEventListener('click',(e)=>{
+  e.preventDefault();
+  moveNoBtn();
+});
+
+
+for(let i=0;i<50;i++){
+  setTimeout(spawnFloatingWord,i*40);
+}
+</script>
+</body>
+</html>
